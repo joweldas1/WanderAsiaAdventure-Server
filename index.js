@@ -1,5 +1,5 @@
 //import
-const { MongoClient, ServerApiVersion, Long } = require('mongodb');
+const { MongoClient, ServerApiVersion, Long, ObjectId } = require('mongodb');
 
 const express = require('express') 
 const cors = require('cors')
@@ -33,6 +33,11 @@ async function run() {
     app.get('/tourism',async(req,res)=>{
         const data= await tourPlace.find().toArray()
         res.send(data)
+    })
+    app.get(`/tourism/:id`,async(req,res)=>{
+      const id={_id:new ObjectId(req.params.id)}
+      const data=await tourPlace.findOne(id)
+      res.send(data);
     })
    
 
