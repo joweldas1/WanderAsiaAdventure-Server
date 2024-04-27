@@ -9,7 +9,7 @@ require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5500 ; 
 app.use(cors());
-app.use(express());
+app.use(express.json());
 
 
 
@@ -29,7 +29,10 @@ async function run() {
   try {
     //access data base
     const tourPlace=client.db('WanderAsiaAdventures').collection('tourism')
+    const userData=client.db('WanderAsiaAdventures').collection('uploadData')
 
+
+//get-DATA
     app.get('/tourism',async(req,res)=>{
         const data= await tourPlace.find().toArray()
         res.send(data)
@@ -39,8 +42,40 @@ async function run() {
       const data=await tourPlace.findOne(id)
       res.send(data);
     })
-   
+    app.get('/uploadData',async(req,res)=>{
+      const data=await userData.find().toArray()
+      res.send(data)
+    })
 
+
+    app.get(`/tourSingleDetails/:id`,async(req,res)=>{
+      const id={_id:new ObjectId(req.params.id)};
+      const data= await userData.findOne(id)
+      res.send(data)
+      console.log(data);
+    })
+
+
+    app.get(`/myData/:email`,async(req,res)=>{
+      const email=req.params.email;
+      const data=await userData.find({userEmail:email}).toArray();
+      res.send(data)
+
+      console.log(data);
+    })
+
+
+
+   
+//post----DATA
+
+    app.post('/uploadData',async(req,res)=>{
+      const data=req.body;
+      const result=await userData.insertOne(data)
+      res.send(result)
+      console.log(data);
+    
+    })
 
 
         
