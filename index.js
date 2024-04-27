@@ -60,13 +60,45 @@ async function run() {
       const email=req.params.email;
       const data=await userData.find({userEmail:email}).toArray();
       res.send(data)
+    })
 
-      console.log(data);
+
+    app.get('/update/:id',async(req,res)=>{
+      const id={_id:new ObjectId(req.params.id)};
+      const query=await userData.findOne(id)
+      res.send(query)
     })
 
 
 
    
+    //Put ---- data
+    app.put('/update/:id',async(req,res)=>{
+      const id={_id:new ObjectId(req.params.id)}
+      const updateData=req.body;
+      const options = {upsert:true}
+      console.log(updateData);
+      const updatedToServer={
+        $set:{
+          image:updateData.image,
+          tourists_spot_name:updateData.tourists_spot_name,
+          country_Name:updateData.country_Name,
+          location:updateData.location,
+          description:updateData.description,
+          cost:updateData.cost,
+          seasonality:updateData.seasonality,
+          travel_time:updateData.travel_time,
+          totalVisitorsPerYear:updateData.totalVisitorsPerYear,
+        }
+      };
+      const result=await userData.updateOne(id,updatedToServer,options)
+      res.send(result)
+
+
+    })
+
+
+
 //post----DATA
 
     app.post('/uploadData',async(req,res)=>{
