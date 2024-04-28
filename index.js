@@ -60,6 +60,7 @@ async function run() {
       const email=req.params.email;
       const data=await userData.find({userEmail:email}).toArray();
       res.send(data)
+      console.log(data);
     })
 
 
@@ -108,6 +109,15 @@ async function run() {
       console.log(data);
     
     })
+
+    //Delete --Data
+    app.delete('/delete/:id',async(req,res)=>{
+      const id=req.params.id
+      const query={_id:new ObjectId(id)}
+      const result=await userData.deleteOne(query)
+      res.send(result)
+    })
+
 
 
         
