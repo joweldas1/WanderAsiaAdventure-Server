@@ -30,6 +30,7 @@ async function run() {
     //access data base
     const tourPlace=client.db('WanderAsiaAdventures').collection('tourism')
     const userData=client.db('WanderAsiaAdventures').collection('uploadData')
+    const threeSectionCard=client.db('WanderAsiaAdventures').collection('sectionCard')
 
 
 //get-DATA
@@ -55,6 +56,12 @@ async function run() {
       console.log(data);
     })
 
+    app.get('/threeData',async(req,res)=>{
+      const data = await threeSectionCard.find().toArray()
+      res.send(data)
+    })
+
+gi
 
     app.get(`/myData/:email`,async(req,res)=>{
       const email=req.params.email;
